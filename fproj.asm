@@ -67,7 +67,6 @@ display_lines:
 
 line8:
 	cmp	r12, qword 9
-	call	print_nl
 	je	display_lines_end
 
 	cmp	qword [rcx], qword 1
@@ -137,11 +136,12 @@ b8:
 	jmp	line8
 
 display_lines_end:
+	call 	print_nl
+
 	restoregs
 	leave
 	ret
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Display numbers Subroutine ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 display_numbers:
 	enter	0,0
 	saveregs
