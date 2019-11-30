@@ -8,59 +8,126 @@ section .data
 
 	prompt1: db	"if you want to swap, enter a,b", 10, 0
 	prompt2: db	"if you want to end, enter 0: ", 0
+	msg1: db	"program done", 10, 0
 	err1: db	"incorrect input, redo", 10, 0
-	err2: db 	"2nd character must be ','", 10, 0
+	err2: db 	"Something went wrong", 10, 0
+
+        top8: db      "+------+", 0
+        top7: db      "+-----+", 0
+        top6: db      "+----+", 0  
+        top5: db      "+---+", 0   
+        top4: db      "+--+", 0    
+        top3: db      "+-+", 0     
+        top2: db      "++", 0      
+
+        middle8: db      "+      +", 0
+        middle7: db      "+     +", 0
+        middle6: db      "+    +", 0  
+        middle5: db      "+   +", 0   
+        middle4: db      "+  +", 0    
+        middle3: db      "+ +", 0     
+
+        bottom8: db      "..+------+", 0
+        bottom7: db      "..+-----+.", 0
+        bottom6: db      "...+----+.", 0
+        bottom5: db      "...+---+..", 0
+        bottom4: db      "....+--+..", 0
+        bottom3: db      "....+-+...", 0
+        bottom2: db      ".....++...", 0
+        bottom1: db      ".....+....", 0
+
+	space5: db 	"     ", 0
+	space4: db	"    ", 0
 
 section .bss
 
 section .text
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Subroutines ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-display:
+display_lines:
+	enter	0,0
+	saveregs
+
+	
+
+	restoregs
+	leave
+	ret
+
+display_numbers:
 	enter	0,0
 	saveregs
 
 	mov 	rcx, array
 	
+	mov	rax, space5
+	call	print_string
 	mov 	rax, qword [rcx]
 	call	print_int
-	mov	al, ','
-	call	print_char
+	mov	rax, space4
+	call	print_string
 
+	mov	rax, space5
+	call	print_string
 	mov 	rax, qword [rcx+8]
 	call	print_int
-	mov	al, ','
-	call	print_char
+	mov	rax, space4
+	call	print_string
 
+	mov	rax, space5
+	call	print_string
 	mov 	rax, qword [rcx+16]
 	call	print_int
-	mov	al, ','
-	call	print_char
+	mov	rax, space4
+	call	print_string
 
+	mov	rax, space5
+	call	print_string
 	mov 	rax, qword [rcx+24]
 	call	print_int
-	mov	al, ','
-	call	print_char
+	mov	rax, space4
+	call	print_string
 
-	mov 	rax, qword [rcx+32]
+	mov	rax, space5
+	call	print_string
+	mov 	rax, qword [rcx32]
 	call	print_int
-	mov	al, ','
-	call	print_char
+	mov	rax, space4
+	call	print_string
 
+	mov	rax, space5
+	call	print_string
 	mov 	rax, qword [rcx+40]
 	call	print_int
-	mov	al, ','
-	call	print_char
+	mov	rax, space4
+	call	print_string
 
+	mov	rax, space5
+	call	print_string
 	mov 	rax, qword [rcx+48]
 	call	print_int
-	mov	al, ','
-	call	print_char
+	mov	rax, space4
+	call	print_string
 
+	mov	rax, space5
+	call	print_string
 	mov 	rax, qword [rcx+56]
 	call	print_int
+	mov	rax, space4
+	call	print_string
 
 	call 	print_nl
+
+	restoregs
+	leave
+	ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Display subroutine ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+display:
+	enter	0,0
+	saveregs
+
+	call 	display_numbers
 
 	restoregs
 	leave
@@ -86,22 +153,27 @@ prompt:
 	mov	rax, prompt2
 	call	print_string
 
-	call	read_char	;Asks user for input (char) and saves it in al
+re_prompt:
+	call 	read_char	;;Asks user for input (char) and saves it in al
+
+	cmp	al, 10
+	je	re_prompt
 
 	cmp	al, '0'
 	je	asm_main_end
+
 	cmp 	al, '1'
 	jb	error1
 	cmp	al, '8'
 	ja	error1
-	mov	r9, 0
-	mov	r9b, al
-	sub 	r9b, '0' 	;Saves value of 1st array to be swapped
+	mov	r12, 0
+	mov	r12b, al		;Saves value of 1st array to be swapped
+	sub 	r12b, '0' 
 	
 	call	read_char
-	
+
 	cmp	al, ','
-	jne	error2
+	jne	error1
 
 	call	read_char
 
@@ -109,49 +181,58 @@ prompt:
 	jb	error1
 	cmp	al, '8'
 	ja	error1
-	mov	r10, 0
-	mov	r10b, al
-	sub 	r10b, '0'	;Saves value of 2nd array to be swapped
-
-	;;find the item with value r12
+	mov	r13, 0
+	mov	r13b, al
+	sub 	r13b, '0'	;Saves value of 2nd array to be swapped
+	
+	mov     rbx, array
+		;;find the item with value r12
   loop1:
-	mov	rbx, array
-	cmp	r9, [rbx]
+	cmp	r12, [rbx]
 	je	have_first
 	add 	rbx, 8
 	jmp	loop1
 
   have_first:
-	mov	r11, rbx
+	mov	r14, rbx
 	mov	rbx, array
 
+		;; find the item with value r13
   loop2:
-	cmp	r10, [rbx]
+	cmp	r13, [rbx]
 	je	have_second
 	add 	rbx, 8
 	jmp	loop2
 
   have_second:
-	mov	r12, rbx
+	mov	r15, rbx
+                   		;; r12 = 1st value to swap
+                                ;; r13 = 2nd value to swap
+          			;; r14 = address of 1st value to swap
+                                ;; r15 = address of 2nd value to swap
 	mov	[r14], r13
 	mov	[r15], r12
 	
-	call	 display
+	call	display
 
-	jmp 	asm_main_end
+	jmp 	prompt
 	
   error1:
 	mov 	rax, err1
 	call	print_string
-	jmp	asm_main_end
+	jmp	prompt
 
   error2:
-	mov 	rax, err2
-	call	print_string
-	jmp	asm_main_end
+        mov     rax, err2
+        call    print_string
+        jmp     prompt
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Main program exit ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 asm_main_end:
+        mov     rax, msg1
+        call    print_string
+	
 	restoregs
 	leave
 	ret
