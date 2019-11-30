@@ -66,24 +66,25 @@ display_lines:
 	jmp 	line_loop
 
 line8:
-	cmp	r12, qword 8
+	cmp	r12, qword 9
+	call	print_nl
 	je	display_lines_end
 
-	cmp	[rcx], qword 1
+	cmp	qword [rcx], qword 1
 	je	b1
-	cmp	[rcx], qword 2
+	cmp	qword [rcx], qword 2
 	je	b2
-	cmp	[rcx], qword 3
+	cmp	qword [rcx], qword 3
 	je	b3
-	cmp	[rcx], qword 4
+	cmp	qword [rcx], qword 4
 	je	b4
-	cmp	[rcx], qword 5
+	cmp	qword [rcx], qword 5
 	je	b5
-	cmp	[rcx], qword 6
+	cmp	qword [rcx], qword 6
 	je	b6
-	cmp	[rcx], qword 7
+	cmp	qword [rcx], qword 7
 	je	b7
-	cmp	[rcx], qword 8
+	cmp	qword [rcx], qword 8
 	je	b8
 
 b1:
@@ -140,6 +141,7 @@ display_lines_end:
 	leave
 	ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Display numbers Subroutine ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 display_numbers:
 	enter	0,0
 	saveregs
@@ -212,6 +214,8 @@ display_numbers:
 display:
 	enter	0,0
 	saveregs
+
+	call	display_lines
 
 	call 	display_numbers
 
