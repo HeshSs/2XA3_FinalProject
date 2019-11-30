@@ -36,6 +36,7 @@ section .data
         bottom2: db      ".....++...", 0
         bottom1: db      ".....+....", 0
 
+	space10: db 	"          ",
 	space5: db 	"     ", 0
 	space4: db	"    ", 0
 
@@ -48,8 +49,93 @@ display_lines:
 	enter	0,0
 	saveregs
 
-	
+	mov	rbx, qword 1
 
+  line_loop:
+	cmp	rbx, qword 9
+	je	display_lines_end
+
+	;;;;;; Add lines 1-7
+
+	cmp	rbx, qword 8
+	mov	rcx, array
+	mov	r12, qword 1
+	je	line8
+
+	inc	rbx
+	jmp 	line_loop
+
+line8:
+	cmp	r12, qword 8
+	je	display_lines_end
+
+	cmp	[rcx], qword 1
+	je	b1
+	cmp	[rcx], qword 2
+	je	b2
+	cmp	[rcx], qword 3
+	je	b3
+	cmp	[rcx], qword 4
+	je	b4
+	cmp	[rcx], qword 5
+	je	b5
+	cmp	[rcx], qword 6
+	je	b6
+	cmp	[rcx], qword 7
+	je	b7
+	cmp	[rcx], qword 8
+	je	b8
+
+b1:
+	mov 	rax, bottom1
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line8
+b2:
+	mov 	rax, bottom2
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line8
+b3:
+	mov 	rax, bottom3
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line8
+b4:
+	mov 	rax, bottom4
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line8
+b5:
+	mov 	rax, bottom5
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line8
+b6:
+	mov 	rax, bottom6
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line8
+b7:
+	mov 	rax, bottom7
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line8
+b8:
+	mov 	rax, bottom8
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line8
+
+display_lines_end:
 	restoregs
 	leave
 	ret
@@ -90,7 +176,7 @@ display_numbers:
 
 	mov	rax, space5
 	call	print_string
-	mov 	rax, qword [rcx32]
+	mov 	rax, qword [rcx+32]
 	call	print_int
 	mov	rax, space4
 	call	print_string
