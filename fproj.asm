@@ -12,20 +12,20 @@ section .data
 	err1: db	"incorrect input, redo", 10, 0
 	err2: db 	"Something went wrong", 10, 0
 
-        top8: db      "+------+", 0
-        top7: db      "+-----+", 0
-        top6: db      "+----+", 0  
-        top5: db      "+---+", 0   
-        top4: db      "+--+", 0    
-        top3: db      "+-+", 0     
-        top2: db      "++", 0      
+        top8: db      "  +------+", 0
+        top7: db      "  +-----+ ", 0
+        top6: db      "   +----+ ", 0  
+        top5: db      "   +---+  ", 0   
+        top4: db      "    +--+  ", 0    
+        top3: db      "    +-+   ", 0     
+        top2: db      "     ++   ", 0      
 
-        middle8: db      "+      +", 0
-        middle7: db      "+     +", 0
-        middle6: db      "+    +", 0  
-        middle5: db      "+   +", 0   
-        middle4: db      "+  +", 0    
-        middle3: db      "+ +", 0     
+        middle8: db      "  +      +", 0
+        middle7: db      "  +     + ", 0
+        middle6: db      "   +    + ", 0  
+        middle5: db      "   +   +  ", 0   
+        middle4: db      "    +  +  ", 0    
+        middle3: db      "    + +   ", 0     
 
         bottom8: db      "..+------+", 0
         bottom7: db      "..+-----+.", 0
@@ -36,7 +36,7 @@ section .data
         bottom2: db      ".....++...", 0
         bottom1: db      ".....+....", 0
 
-	space10: db 	"          ",
+	space10: db 	"          ",0
 	space5: db 	"     ", 0
 	space4: db	"    ", 0
 
@@ -55,17 +55,94 @@ display_lines:
 	cmp	rbx, qword 9
 	je	display_lines_end
 
-	;;;;;; Add lines 1-7
+	;;;;;; Add lines 1-6
 
-	cmp	rbx, qword 8
+	mov	rcx, array
+	mov	r13, qword 1
+	cmp     rbx, qword 7
+	je	line7
+
 	mov	rcx, array
 	mov	r12, qword 1
+	cmp     rbx, qword 8
 	je	line8
 
+line_back:
+	call	print_nl
 	inc	rbx
 	jmp 	line_loop
 
-line8:
+line7:					;;;;; line7
+	cmp	r13, qword 9
+	je	line_back
+
+	cmp	qword [rcx], qword 1
+	je	L71
+	cmp	qword [rcx], qword 2
+	je	L72
+	cmp	qword [rcx], qword 3
+	je	L73
+	cmp	qword [rcx], qword 4
+	je	L74
+	cmp	qword [rcx], qword 5
+	je	L75
+	cmp	qword [rcx], qword 6
+	je	L76
+	cmp	qword [rcx], qword 7
+	je	L77
+	cmp	qword [rcx], qword 8
+	je	L78
+
+L71:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line7
+L72:
+	mov 	rax, top2
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line7
+L73:
+	mov 	rax, middle3
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line7
+L74:
+	mov 	rax, middle4
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line7
+L75:
+	mov 	rax, middle5
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line7
+L76:
+	mov 	rax, middle6
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line7
+L77:
+	mov 	rax, middle7
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line7
+L78:
+	mov 	rax, middle8
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line7
+
+line8:					;;;;; line8
 	cmp	r12, qword 9
 	je	display_lines_end
 
@@ -141,7 +218,7 @@ display_lines_end:
 	restoregs
 	leave
 	ret
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Display numbers Subroutine ;;;;;;;;;;;;;;;;;;;;;;;
 display_numbers:
 	enter	0,0
 	saveregs
