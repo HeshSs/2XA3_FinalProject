@@ -9,8 +9,9 @@ section .data
 	prompt1: db	"if you want to swap, enter a,b", 10, 0
 	prompt2: db	"if you want to end, enter 0: ", 0
 	msg1: db	"program done", 10, 0
+	msg2: db	"Swapping box  ", 0
+	msg3: db	"  with box  ", 0
 	err1: db	"incorrect input, redo", 10, 0
-	err2: db 	"Something went wrong", 10, 0
 
         top8: db      "  +------+", 0
         top7: db      "  +-----+ ", 0
@@ -829,7 +830,18 @@ re_prompt:
                                 ;; r15 = address of 2nd value to swap
 	mov	[r14], r13
 	mov	[r15], r12
-	
+
+swapping:
+	mov	rax, msg2
+	call 	print_string
+	mov	rax, r12
+	call	print_int
+	mov	rax, msg3
+	call	print_string
+	mov	rax, r13
+	call	print_int
+	call	print_nl
+
 	call	display
 
 	jmp 	prompt
@@ -837,13 +849,8 @@ re_prompt:
   error1:
 	mov 	rax, err1
 	call	print_string
+	call	display
 	jmp	prompt
-
-  error2:
-        mov     rax, err2
-        call    print_string
-        jmp     prompt
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Main program exit ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 asm_main_end:
