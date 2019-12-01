@@ -59,6 +59,26 @@ display_lines:
 
 	mov	rcx, array
 	mov	r13, qword 1
+	cmp     rbx, qword 1
+	je	line1
+
+	mov	rcx, array
+	mov	r12, qword 1
+	cmp     rbx, qword 2
+	je	line2
+
+	mov	rcx, array
+	mov	r13, qword 1
+	cmp     rbx, qword 3
+	je	line3
+
+	mov	rcx, array
+	mov	r12, qword 1
+	cmp     rbx, qword 4
+	je	line4
+
+	mov	rcx, array
+	mov	r13, qword 1
 	cmp     rbx, qword 5
 	je	line5
 
@@ -81,6 +101,286 @@ line_back:
 	call	print_nl
 	inc	rbx
 	jmp 	line_loop
+
+line1:					;;;;; line1
+	cmp	r13, qword 9
+	je	line_back
+
+	cmp	qword [rcx], qword 1
+	je	L11
+	cmp	qword [rcx], qword 2
+	je	L12
+	cmp	qword [rcx], qword 3
+	je	L13
+	cmp	qword [rcx], qword 4
+	je	L14
+	cmp	qword [rcx], qword 5
+	je	L15
+	cmp	qword [rcx], qword 6
+	je	L16
+	cmp	qword [rcx], qword 7
+	je	L17
+	cmp	qword [rcx], qword 8
+	je	L18
+
+L11:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line1
+L12:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line1
+L13:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line1
+L14:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line1
+L15:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line1
+L16:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line1
+L17:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line1
+L18:
+	mov 	rax, top8
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line1
+
+line2:					;;;;; line2
+	cmp	r12, qword 9
+	je	line_back
+
+	cmp	qword [rcx], qword 1
+	je	L21
+	cmp	qword [rcx], qword 2
+	je	L22
+	cmp	qword [rcx], qword 3
+	je	L23
+	cmp	qword [rcx], qword 4
+	je	L24
+	cmp	qword [rcx], qword 5
+	je	L25
+	cmp	qword [rcx], qword 6
+	je	L26
+	cmp	qword [rcx], qword 7
+	je	L27
+	cmp	qword [rcx], qword 8
+	je	L28
+
+L21:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line2
+L22:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line2
+L23:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line2
+L24:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line2
+L25:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line2
+L26:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line2
+L27:
+	mov 	rax, top7
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line2
+L28:
+	mov 	rax, middle8
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line2
+
+line3:					;;;;; line3
+	cmp	r13, qword 9
+	je	line_back
+
+	cmp	qword [rcx], qword 1
+	je	L31
+	cmp	qword [rcx], qword 2
+	je	L32
+	cmp	qword [rcx], qword 3
+	je	L33
+	cmp	qword [rcx], qword 4
+	je	L34
+	cmp	qword [rcx], qword 5
+	je	L35
+	cmp	qword [rcx], qword 6
+	je	L36
+	cmp	qword [rcx], qword 7
+	je	L37
+	cmp	qword [rcx], qword 8
+	je	L38
+
+L31:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line3
+L32:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line3
+L33:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line3
+L34:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line3
+L35:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line3
+L36:
+	mov 	rax, top6
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line3
+L37:
+	mov 	rax, middle7
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line3
+L38:
+	mov 	rax, middle8
+	call 	print_string
+	add	rcx, 8
+	inc	r13
+	jmp	line3
+
+line4:					;;;;; line4
+	cmp	r12, qword 9
+	je	line_back
+
+	cmp	qword [rcx], qword 1
+	je	L41
+	cmp	qword [rcx], qword 2
+	je	L42
+	cmp	qword [rcx], qword 3
+	je	L43
+	cmp	qword [rcx], qword 4
+	je	L44
+	cmp	qword [rcx], qword 5
+	je	L45
+	cmp	qword [rcx], qword 6
+	je	L46
+	cmp	qword [rcx], qword 7
+	je	L47
+	cmp	qword [rcx], qword 8
+	je	L48
+
+L41:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line4
+L42:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line4
+L43:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line4
+L44:
+	mov 	rax, space10
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line4
+L45:
+	mov 	rax, top5
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line4
+L46:
+	mov 	rax, middle6
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line4
+L47:
+	mov 	rax, middle7
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line4
+L48:
+	mov 	rax, middle8
+	call 	print_string
+	add	rcx, 8
+	inc	r12
+	jmp	line4
 
 line5:					;;;;; line5
 	cmp	r13, qword 9
@@ -455,7 +755,7 @@ asm_main:
 	enter	0,0
 	saveregs
 
-	call	display
+	;call	display
 
 	mov	rdi, array     ;1st param for rperm
 	mov	rsi, qword 8   ;2nd param for rperm
