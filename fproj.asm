@@ -56,44 +56,44 @@ display_lines:
 	cmp	rbx, qword 9
 	je	display_lines_end
 
-	;;;;;; Add lines 1-5
+	;;;	Add lines 1-8
 
-	mov	rcx, array
+	mov	rcx, [rbp+16]	;array @ [rbp+16]
 	mov	r13, qword 1
 	cmp     rbx, qword 1
 	je	line1
 
-	mov	rcx, array
+	mov	rcx, [rbp+16]
 	mov	r12, qword 1
 	cmp     rbx, qword 2
 	je	line2
 
-	mov	rcx, array
+	mov	rcx, [rbp+16]
 	mov	r13, qword 1
 	cmp     rbx, qword 3
 	je	line3
 
-	mov	rcx, array
+	mov	rcx, [rbp+16]
 	mov	r12, qword 1
 	cmp     rbx, qword 4
 	je	line4
 
-	mov	rcx, array
+	mov	rcx, [rbp+16]
 	mov	r13, qword 1
 	cmp     rbx, qword 5
 	je	line5
 
-	mov	rcx, array
+	mov	rcx, [rbp+16]
 	mov	r12, qword 1
 	cmp     rbx, qword 6
 	je	line6
 
-	mov	rcx, array
+	mov	rcx, [rbp+16]
 	mov	r13, qword 1
 	cmp     rbx, qword 7
 	je	line7
 
-	mov	rcx, array
+	mov	rcx, [rbp+16]
 	mov	r12, qword 1
 	cmp     rbx, qword 8
 	je	line8
@@ -674,7 +674,7 @@ display_numbers:
 	enter	0,0
 	saveregs
 
-	mov 	rcx, array
+	mov 	rcx, [rbp+16]
 	
 	mov	rax, space5
 	call	print_string
@@ -743,9 +743,13 @@ display:
 	enter	0,0
 	saveregs
 
+	push	array
 	call	display_lines
+	add	rsp, 8
 
+	push	array
 	call 	display_numbers
+	add	rsp, 8
 
 	restoregs
 	leave
@@ -756,26 +760,20 @@ asm_main:
 	enter	0,0
 	saveregs
 
-	;call	display
-
 	mov	rdi, array     ;1st param for rperm
 	mov	rsi, qword 8   ;2nd param for rperm
 
 	call 	rperm		; now the array 'array' is randomly initialzed
 
-	call	display
-
 prompt:
+	call 	display
+
 	mov 	rax, prompt1
 	call	print_string
 	mov	rax, prompt2
 	call	print_string
 
-re_prompt:
-	call 	read_char	;;Asks user for input (char) and saves it in al
-
-	cmp	al, 10
-	je	re_prompt
+	call 	read_char
 
 	cmp	al, '0'
 	je	asm_main_end
@@ -842,15 +840,27 @@ swapping:
 	call	print_int
 	call	print_nl
 
-	call	display
+  re_prompt:
+        cmp     al, 10
+        je      correct_input
+
+        call    read_char       ;;;;Asks user for input (char) and saves it in al
+        jmp     re_prompt
+
+  correct_input:
 
 	jmp 	prompt
 	
   error1:
 	mov 	rax, err1
 	call	print_string
-	call	display
-	jmp	prompt
+
+  re_prompt1:
+	cmp     al, 10
+        je      prompt
+
+        call    read_char       ;;;;Asks user for input (char) and saves it in al
+        jmp     re_prompt1
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Main program exit ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 asm_main_end:
